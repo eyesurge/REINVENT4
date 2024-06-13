@@ -76,7 +76,7 @@ class Learning(ABC):
         self.distance_threshold = distance_threshold
 
         self.rdkit_smiles_flags = rdkit_smiles_flags
-        self.isomeric = False
+        self.isomeric = True
 
         if "isomericSmiles" in self.rdkit_smiles_flags:
             self.isomeric = True

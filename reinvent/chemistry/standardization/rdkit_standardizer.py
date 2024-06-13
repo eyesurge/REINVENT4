@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class RDKitStandardizer:
-    def __init__(self, filter_configs: Optional[List[FilterConfiguration]], isomeric=False, *args,
+    def __init__(self, filter_configs: Optional[List[FilterConfiguration]], isomeric=True, *args,
     **kwargs):
         self._conversions = Conversions()
         self._filter_configs = self._set_filter_configs(filter_configs)

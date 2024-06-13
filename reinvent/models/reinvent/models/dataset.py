@@ -30,6 +30,8 @@ class Dataset(tud.Dataset):
         smiles = self._smiles_list[i]
         tokens = self._tokenizer.tokenize(smiles)
         encoded = self._vocabulary.encode(tokens)
+        if encoded is None:
+            return None
 
         return torch.tensor(encoded, dtype=torch.long)
 

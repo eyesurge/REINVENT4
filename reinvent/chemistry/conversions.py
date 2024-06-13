@@ -63,7 +63,7 @@ class Conversions:
             return MolFromSmiles(smile)
 
     def mols_to_smiles(
-        self, molecules: List[Mol], isomericSmiles=False, canonical=True
+        self, molecules: List[Mol], isomericSmiles=True, canonical=True
     ) -> List[str]:
         """This method assumes that all molecules are valid."""
         valid_smiles = [
@@ -72,7 +72,7 @@ class Conversions:
         ]
         return valid_smiles
 
-    def mol_to_smiles(self, molecule: Mol, isomericSmiles=False, canonical=True) -> str:
+    def mol_to_smiles(self, molecule: Mol, isomericSmiles=True, canonical=True) -> str:
         """
         Converts a Mol object into a canonical SMILES string.
         :param molecule: Mol object.
@@ -81,7 +81,7 @@ class Conversions:
         if molecule:
             return MolToSmiles(molecule, isomericSmiles=isomericSmiles, canonical=canonical)
 
-    def mol_to_random_smiles(self, molecule: Mol, isomericSmiles=False) -> str:
+    def mol_to_random_smiles(self, molecule: Mol, isomericSmiles=True) -> str:
         """
         Converts a Mol object into a random SMILES string.
         :return: A SMILES string.
@@ -93,7 +93,7 @@ class Conversions:
             return MolToSmiles(random_mol, canonical=False, isomericSmiles=isomericSmiles)
 
     def convert_to_rdkit_smiles(
-        self, smiles: str, allowTautomers=True, sanitize=False, isomericSmiles=False
+        self, smiles: str, allowTautomers=True, sanitize=False, isomericSmiles=True
     ) -> str:
         """
         :param smiles: Converts a smiles string into a canonical SMILES string.
@@ -156,7 +156,7 @@ class Conversions:
             new_atom_order = list(range(mol.GetNumHeavyAtoms()))
             random.shuffle(new_atom_order)
             random_mol = RenumberAtoms(mol, newOrder=new_atom_order)
-            return MolToSmiles(random_mol, canonical=False, isomericSmiles=False)
+            return MolToSmiles(random_mol, canonical=False, isomericSmiles=True)
 
     def mol_to_inchi_key(self, molecule: Mol) -> str:
         """Returns the standard InChI key for a molecule"""

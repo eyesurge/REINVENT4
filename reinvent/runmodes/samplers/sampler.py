@@ -44,7 +44,7 @@ class Sampler(ABC):
     # different from batch size used in dataloader which affect cuda memory
     batch_size: int
     sample_strategy: str = "multinomial"  # Transformer-based models
-    isomeric: bool = False  # Transformer-based models
+    isomeric: bool = True  # Transformer-based models
     randomize_smiles: bool = True
     unique_sequences: bool = False  # backwards compatibility for R3
     chemistry: ChemistryHelpers = None
@@ -95,7 +95,7 @@ def remove_duplicate_sequences(
 
 
 def validate_smiles(
-    mols: List[Chem.Mol], smilies, isomeric: bool = False
+    mols: List[Chem.Mol], smilies, isomeric: bool = True
 ) -> Tuple[List, np.ndarray]:
     """Basic validation of sampled or joined SMILES
 

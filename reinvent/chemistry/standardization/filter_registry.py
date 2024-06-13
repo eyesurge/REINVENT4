@@ -13,8 +13,8 @@ from reinvent.models.reinvent.models.vocabulary import split_by, REGEXP_ORDER
 logger = logging.getLogger(__name__)
 
 # The classical Reinvent prior supports the following elements
-# C, N, O, F, S, Cl, Br
-DEFAULT_ELEMENTS = [6, 7, 8, 9, 16, 17, 35]
+# H, C, N, O, P, S, F, Cl, Br, I, B
+DEFAULT_ELEMENTS = [1, 5, 6, 7, 8, 9, 15, 16, 17, 35, 53]
 
 NEUTRALIZE_PATTERNS = (
     ("[n+;H]", "n"),  # Imidazoles
@@ -72,7 +72,7 @@ class FilterRegistry:
         return maxmol
 
     def _remove_hydrogens(self, mol):
-        return RemoveHs(mol, implicitOnly=False, updateExplicitCount=False, sanitize=True)
+        return RemoveHs(mol, implicitOnly=True, updateExplicitCount=False, sanitize=True)
 
     def _remove_salts(self, mol):
         return SaltRemover.SaltRemover().StripMol(mol, dontRemoveEverything=True)
@@ -91,7 +91,7 @@ class FilterRegistry:
     def _general_cleanup(self, mol):
         rdmolops.Cleanup(mol)
         rdmolops.SanitizeMol(mol)
-        mol = rdmolops.RemoveHs(mol, implicitOnly=False, updateExplicitCount=False, sanitize=True)
+        mol = rdmolops.RemoveHs(mol, implicitOnly=True, updateExplicitCount=False, sanitize=True)
 
         return mol
 
@@ -102,15 +102,16 @@ class FilterRegistry:
             sulfur_filter = "[SH]"
 
             if (
-                not mol.HasSubstructMatch(MolFromSmarts(cyano_filter))
-                and not mol.HasSubstructMatch(MolFromSmarts(oh_filter))
+                #not mol.HasSubstructMatch(MolFromSmarts(cyano_filter))
+                #and not mol.HasSubstructMatch(MolFromSmarts(oh_filter))
+                not mol.HasSubstructMatch(MolFromSmarts(oh_filter))
                 and not mol.HasSubstructMatch(MolFromSmarts(sulfur_filter))
             ):
                 return mol
 
     def _vocabulary_filters(self, mol, vocabulary: List[str]):
         if mol:
-            smiles = MolToSmiles(mol, isomericSmiles=False, canonical=True)
+            smiles = MolToSmiles(mol, isomericSmiles=True, canonical=True)
             tokens = split_by(smiles, REGEXP_ORDER)
 
             for token in tokens:
@@ -196,6 +197,6 @@ class FilterRegistry:
         if mol:
             return mol
 
-        logger.debug(f"{__name__}: failed in stage {stage}")
+        logger.warn(f"{__name__}: failed in stage {stage}")
 
         return None

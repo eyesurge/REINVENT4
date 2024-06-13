@@ -11,7 +11,7 @@ def get_indices_of_unique_smiles(smiles: [str]) -> np.array:
     return sorted_indices
 
 
-def compute_scaffold(mol: Chem.Mol, *, generic: bool = True, isomeric=False) -> str:
+def compute_scaffold(mol: Chem.Mol, *, generic: bool = True, isomeric=True) -> str:
     """Computes the scaffold for an input molecule.
 
     :param mol: the input molecule

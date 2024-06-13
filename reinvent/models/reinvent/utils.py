@@ -15,6 +15,7 @@ def collate_fn(encoded_seqs: List[torch.Tensor]) -> torch.Tensor:
     :return: padded tensor
     """
 
+    encoded_seqs = list(filter(lambda x: x is not None, encoded_seqs))
     max_length = max([seq.size(0) for seq in encoded_seqs])
     collated_arr = torch.zeros(len(encoded_seqs), max_length, dtype=torch.long)  # padded with zeroes
 

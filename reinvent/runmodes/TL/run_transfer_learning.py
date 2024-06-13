@@ -54,7 +54,7 @@ def run_transfer_learning(
     # FIXME: move to preprocessing
     if model_type == "Reinvent":
         if do_standardize:
-            standardizer = RDKitStandardizer(None, isomeric=False)
+            standardizer = RDKitStandardizer(None, isomeric=True)
             actions.append(standardizer.apply_filter)
 
         if do_randomize:
