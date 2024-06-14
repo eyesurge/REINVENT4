@@ -87,9 +87,12 @@ class Conversions:
         :return: A SMILES string.
         """
         if molecule:
-            new_atom_order = list(range(molecule.GetNumAtoms()))
-            random.shuffle(new_atom_order)
-            random_mol = RenumberAtoms(molecule, newOrder=new_atom_order)
+            try:
+                new_atom_order = list(range(molecule.GetNumAtoms()))
+                random.shuffle(new_atom_order)
+                random_mol = RenumberAtoms(molecule, newOrder=new_atom_order)
+            except ValueError:
+                random_mol = molecule
             return MolToSmiles(random_mol, canonical=False, isomericSmiles=isomericSmiles)
 
     def convert_to_rdkit_smiles(
@@ -153,9 +156,12 @@ class Conversions:
         """
         mol = MolFromSmiles(smiles)
         if mol:
-            new_atom_order = list(range(mol.GetNumHeavyAtoms()))
-            random.shuffle(new_atom_order)
-            random_mol = RenumberAtoms(mol, newOrder=new_atom_order)
+            try:
+                new_atom_order = list(range(mol.GetNumHeavyAtoms()))
+                random.shuffle(new_atom_order)
+                random_mol = RenumberAtoms(mol, newOrder=new_atom_order)
+            except ValueError:
+                random_mol = mol
             return MolToSmiles(random_mol, canonical=False, isomericSmiles=True)
 
     def mol_to_inchi_key(self, molecule: Mol) -> str:
