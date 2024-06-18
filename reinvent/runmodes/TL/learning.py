@@ -370,7 +370,11 @@ class Learning(ABC):
                 internal_diversity=intdiv,
             )
 
-            write_report(self.tb_reporter, tb_data)
+            try:
+                logger.info("DATA: epoch {}: {} ; mNLL: {}".format(epoch_no, sampled_smilies, mean_nll))
+                write_report(self.tb_reporter, tb_data)
+            except TypeError:
+                logger.warning("DATA: epoch {}: {} ; mNLL: {}".format(epoch_no, sampled_smilies, mean_nll))
 
         remote_data = RemoteData(
             epoch=epoch_no,

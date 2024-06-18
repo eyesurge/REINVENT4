@@ -57,7 +57,7 @@ class Vocabulary:
 
         for i, token in enumerate(tokens):
             if token not in self._tokens:
-                return None
+                return np.zeros(len(tokens), dtype=np.float32)
             vocab_index[i] = self._tokens[token]
 
         return vocab_index
